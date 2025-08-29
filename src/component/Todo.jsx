@@ -1,38 +1,50 @@
-import React from'react'
-import { useSelector } from'react-redux'
-import AddForm from'../component/AddForm'
-import{useDispatch} from'react-redux'
-import{deleteTodo} from'../features/counter/TodoSlice'
-import{markAsDone} from'../features/counter/TodoSlice'
-//the <Provider> compoenent make redux sr=tore available to any anested component that need to access the redux store  
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import AddForm from '../component/AddForm';
+import { deleteTodo, markAsDone } from '../features/counter/TodoSlice';
 
+export const Todo = () => {
+  const todos = useSelector((state) => state.todos);   // Grab your todos array
+  const dispatch = useDispatch();
 
-//useSelector hook allow you to extract data ot the state from th redux store using selector function
-
-export const Todo=()=>{
-  const todo=useSelector((state)=>state.todos);
-  console.log(todo) 
-  const dispatch=useDispatch();
-  function Deletehandler(id){
-    console.log(id)
+  const deleteHandler = (id) => {
+    console.log('Deleting:', id);
     dispatch(deleteTodo(id));
+  };
 
-  // const newTodo=todo.filter((data)=>data.id!=id);
+  const markHandler = (id) => {
+    console.log('Toggling done for:', id);
+    dispatch(markAsDone(id));
+  };
 
-  }
-
-  function markHandler(id){
-    dispatch(markAsDone(id))
-    console.log(id)
-  
-  }
-  return(
+  return (
     <>
-    <AddForm/>
-    <ul>
-      {todo.map((todo)=>(<li key={todo.id}>{todo.task}<button onClick={()=>Deletehandler(todo.id)}>Delete</button><button key={todo.is}onClick={()=>{markHandler(todo.id)}}>{todo.isDone?'done':'undone'}</button></li>))}
-    </ul>
-    
+      <AddForm />
+
+      <ul className="todoList">
+        {todos.map((todo) => (
+          <li
+            key={todo.id}
+            className={`todoItem ${todo.isDone ? 'done' : ''}`}
+          >
+            <span className="taskText">{todo.task}</span>
+            <div className="buttonGroup">
+              <button
+                className="deleteButton"
+                onClick={() => deleteHandler(todo.id)}
+              >
+                🗑️
+              </button>
+              <button
+                className="toggleButton"
+                onClick={() => markHandler(todo.id)}
+              >
+                {todo.isDone ? '✅' : '⬜'}
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
     </>
-  )
-}
+  );
+};

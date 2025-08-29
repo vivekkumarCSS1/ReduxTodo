@@ -17,10 +17,18 @@ dispatch(addTodo(task))
  
 
   return(
-   <form onSubmit={handleEvent}>
-    <input type='text' onChange={(e)=>setTask(e.target.value)}></input>
-    
-    <button>Add Task</button>
-   </form>
+    <form className="add-form" onSubmit={handleEvent}>
+    <input
+      type="text"
+      value={task}
+      onChange={(e) => setTask(e.target.value)}
+      className="add-input"
+      placeholder="What's the task, boss?"
+      required
+    />
+    <button type="submit" className="add-button">
+      Add Task
+    </button>
+  </form>
   )
 }
